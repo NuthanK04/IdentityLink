@@ -13,14 +13,17 @@ enum LinkPrecedence {
 }
 
 model Contact {
-  id             Int              @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   phoneNumber    String?
   email          String?
   linkedId       Int?
-  linkPrecedence LinkPrecedence
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  linkPrecedence LinkPrecedence @default(primary)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   deletedAt      DateTime?
 
+  @@index([email])
+  @@index([phoneNumber])
+  @@index([linkedId])
   @@map("contacts")
 }
