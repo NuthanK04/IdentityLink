@@ -1,12 +1,17 @@
 import express from "express";
 import cors from "cors";
 
+import identifyRoutes from "./routes/identify.routes";
+
 const app = express();
 const PORT = 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Register API Routes
+app.use("/", identifyRoutes);
 
 // Root Route
 app.get("/", (_req, res) => {
@@ -17,7 +22,7 @@ app.get("/", (_req, res) => {
 app.get("/health", (_req, res) => {
   res.status(200).json({
     status: "OK",
-    message: "Server is healthy"
+    message: "Server is healthy",
   });
 });
 
