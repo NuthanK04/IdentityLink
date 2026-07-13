@@ -3,13 +3,17 @@ kind: Service
 
 metadata:
   name: identitylink-backend
+  labels:
+    app: identitylink-backend
 
 spec:
   selector:
     app: identitylink-backend
 
   ports:
-    - port: 3000
+    - name: http
+      protocol: TCP
+      port: 3000
       targetPort: 3000
 
   type: NodePort

@@ -3,6 +3,8 @@ kind: HorizontalPodAutoscaler
 
 metadata:
   name: identitylink-backend-hpa
+  labels:
+    app: identitylink-backend
 
 spec:
   scaleTargetRef:
@@ -17,7 +19,6 @@ spec:
     - type: Resource
       resource:
         name: cpu
-
         target:
           type: Utilization
           averageUtilization: 70

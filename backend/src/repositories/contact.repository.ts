@@ -2,7 +2,6 @@ import prisma from "../config/prisma";
 import { LinkPrecedence } from "@prisma/client";
 
 export class ContactRepository {
-
   async findByEmailOrPhone(email?: string, phoneNumber?: string) {
     return prisma.contact.findMany({
       where: {
@@ -58,7 +57,9 @@ export class ContactRepository {
 
   async updateToSecondary(id: number, linkedId: number) {
     return prisma.contact.update({
-      where: { id },
+      where: {
+        id,
+      },
       data: {
         linkedId,
         linkPrecedence: LinkPrecedence.secondary,
@@ -66,31 +67,25 @@ export class ContactRepository {
     });
   }
 
-  async updateLinkedContacts(oldPrimary: number, newPrimary: number) {
+  async updateSecondaryContacts(
+    oldPrimaryId: number,
+    newPrimaryId: number
+  ) {
     return prisma.contact.updateMany({
       where: {
-        linkedId: oldPrimary,
+        linkedId: oldPrimaryId,
       },
       data: {
-        linkedId: newPrimary,
+        linkedId: newPrimaryId,
       },
     });
   }
+
   async getAllContacts() {
-  return prisma.contact.findMany({
-    orderBy: {
-      createdAt: "asc",
-    },
-  });
-}
-async updateSecondaryContacts(oldPrimaryId: number, newPrimaryId: number) {
-  return prisma.contact.updateMany({
-    where: {
-      linkedId: oldPrimaryId,
-    },
-    data: {
-      linkedId: newPrimaryId,
-    },
-  });
-}
+    return prisma.contact.findMany({
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+  }
 }

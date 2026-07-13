@@ -3,6 +3,8 @@ kind: Deployment
 
 metadata:
   name: postgres
+  labels:
+    app: postgres
 
 spec:
   replicas: 1
@@ -34,3 +36,24 @@ spec:
 
             - name: POSTGRES_DB
               value: "identitylink"
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 20
+            periodSeconds: 10
+
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 10
+            periodSeconds: 5
