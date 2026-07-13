@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: identitylink-backend
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: identitylink-backend
+
+  template:
+    metadata:
+      labels:
+        app: identitylink-backend
+
+    spec:
+      containers:
+        - name: backend
+
+          image: identitylink-backend:latest
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 3000
+
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://postgres:nuthan.iiit@postgres:5432/identitylink"

@@ -1,32 +1,42 @@
 import express from "express";
 import cors from "cors";
-
 import identifyRoutes from "./routes/identify.routes";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Register API Routes
+// Routes
 app.use("/", identifyRoutes);
 
-// Root Route
 app.get("/", (_req, res) => {
   res.send("🚀 IdentityLink Backend is running...");
 });
 
-// Health Route
 app.get("/health", (_req, res) => {
-  res.status(200).json({
+  res.json({
     status: "OK",
     message: "Server is healthy",
   });
 });
 
-// Start Server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+
+// These handlers help us see if something is shutting down the process
+process.on("SIGINT", () => {
+  console.log("Server shutting down...");
+  server.close(() => process.exit(0));
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err);
 });

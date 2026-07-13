@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: identitylink-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nuthan.iiit
+      POSTGRES_DB: identitylink
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: identitylink-backend
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:nuthan.iiit@postgres:5432/identitylink
+
+volumes:
+  postgres_data:
